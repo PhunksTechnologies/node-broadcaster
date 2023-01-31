@@ -20,9 +20,9 @@ const outputDir = path.join(__dirname, "../dist");
 
 app.use(express.static(outputDir));
 
-app.get("/", function (req, res) {
-    res.sendFile(path.join(outputDir, "index.html"));
-});
+// app.get("/", function (req, res) {
+//     res.sendFile(path.join(outputDir, "index.html"));
+// });
 
 (async () => {
     await queue.loadTracks("tracks");
