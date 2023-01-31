@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "npm run build && node server",
-    "cloud_start": "npm run build && node server > stdout.txt 2> stderr.txt"
+    "cloud_start": "pm2 start cloud_start.sh"
   },
   "dependencies": {
     "@dropb/ffprobe": "*",
