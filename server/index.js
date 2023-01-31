@@ -62,7 +62,7 @@ app.get("/", function (req, res) {
     // HTTP stream for music
     app.get("/stream", (req, res) => {
         const { id, client } = queue.addClient();
-
+        console.log('A listener connected, IP: ' + req.ip);
         res.set({
             "Content-Type": "audio/mp3",
             "Transfer-Encoding": "chunked",
