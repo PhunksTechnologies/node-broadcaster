@@ -114,7 +114,7 @@ class Queue {
         if (!track) return;
 
         console.log("Starting audio stream");
-        console.log(track.filepath.substring(7, track.filepath.lenghth-4));
+        console.log(track.filepath.substring(7, track.filepath.length-4));
         this.stream = createReadStream(track.filepath);
     }
 
