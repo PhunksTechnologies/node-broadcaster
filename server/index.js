@@ -64,8 +64,8 @@ app.use(express.static(outputDir));
         const { id, client } = queue.addClient();
         console.log('A listener connected, IP: ' + req.ip);
         res.set({
-            "Content-Type": "audio/mp3",
-            "Transfer-Encoding": "chunked",
+            "Content-Type": "audio/mp3"
+            // "Transfer-Encoding": "chunked",
         }).status(200);
 
         client.pipe(res);
