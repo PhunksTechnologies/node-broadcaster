@@ -99,7 +99,7 @@ class Queue {
     // Otherwise, resume the current track
     play(useNewTrack = false) {
         if (useNewTrack || !this.currentTrack) {
-            console.log("Playing new track");
+            // console.log("Playing new track");
             this.getNextTrack();
             this.loadTrackStream();
             this.start();
@@ -113,7 +113,7 @@ class Queue {
         const track = this.currentTrack;
         if (!track) return;
 
-        console.log("Starting audio stream");
+        // console.log("Starting audio stream");
         console.log(track.filepath.substring(7, track.filepath.length-4));
         this.stream = createReadStream(track.filepath);
     }
