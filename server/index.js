@@ -138,11 +138,11 @@ async function getIPInfo(ip){
     .then(function (response) {
         
         let str = JSON.stringify(response.data.body.list[0].html);
-        console.log(str);
-        let country = str.substring(str.indexOf('country')+17, str.indexOf('n')-2);
-        let city = str.substring(str.indexOf('city')+14, str.indexOf('n')-2);
-        let descr = str.substring(str.indexOf('descr')+15, str.indexOf('n')-2);
-        return country + ', '+ city + ', ' + descr;
+        // console.log(str);
+        let country = str.substring(str.indexOf('country')+17, str.indexOf('\n', str.indexOf('country')+17));
+        let city = str.substring(str.indexOf('city')+14, str.indexOf('\n', str.indexOf('city')+14));
+        let descr = str.substring(str.indexOf('descr')+15, str.indexOf('\n', str.indexOf('descr')+15));
+        return [country, city, descr];
     })
     .catch(function (error) {
         console.log(error);
@@ -152,10 +152,11 @@ async function getIPInfo(ip){
 
     // http STREAM FOR MUSIC
     app.get("/stream", async (req, res) => {
+        let info = await getIPInfo(ip);
         const { id, client } = queue.addClient();
         let ip = req.ip.substring(7, req.ip.length);
         console.log(getPrettyTime(new Date()).toString() + ': a listener connected, IP: ' + ip);
-        listeners.push([ip, await getIPInfo(ip)]);
+        listeners.push([ip, info[0], info[1], info[2]]);
         // listeners.push([ip, await getIPInfo(ip)]);
         showListeneres(listeners);
         res.set({
