@@ -155,11 +155,10 @@ async function getIPInfo(ip){
     // http STREAM FOR MUSIC
     app.get("/stream", async (req, res) => {
         let ip = req.ip.substring(7, req.ip.length);
-        console.log(ip);
-        let info = await getIPInfo(ip);
+        let info = getIPInfo(ip);
         const { id, client } = queue.addClient();
         console.log(getPrettyTime(new Date()).toString() + ': a listener connected, IP: ' + ip);
-        listeners.push([ip, info[0], info[1], info[2]]);
+        listeners.push([ip, getIPInfo(ip)[0], getIPInfo(ip)[1], getIPInfo(ip)[2]]);
         // listeners.push([ip, await getIPInfo(ip)]);
         showListeneres(listeners);
         res.set({
