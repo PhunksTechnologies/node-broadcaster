@@ -14,6 +14,33 @@ const io = new IOServer(server, {
     },
 });
 
+//HANDLING LISTENERS DISPLYING
+function removeItemOnce(arr, value) {
+    var index = arr.indexOf(value);
+    if (index > -1) {
+      arr.splice(index, 1);
+    }
+    return arr;
+};
+  
+function removeItemAll(arr, value) {
+    var i = 0;
+    while (i < arr.length) {
+        if (arr[i] === value) {
+        arr.splice(i, 1);
+        } else {
+        ++i;
+        }
+    }
+    return arr;
+};
+
+function showListeneres(data){
+    console.table(data)
+};
+
+let listeners =[];
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const outputDir = path.join(__dirname, "../dist");
@@ -63,6 +90,8 @@ app.use(express.static(outputDir));
     app.get("/stream", (req, res) => {
         const { id, client } = queue.addClient();
         console.log('A listener connected, IP: ' + req.ip);
+        listeners.push(req.ip);
+        showListeneres(listeners);
         res.set({
             "Content-Type": "audio/mp3"
             // "Transfer-Encoding": "chunked",
@@ -72,6 +101,8 @@ app.use(express.static(outputDir));
 
         req.on("close", () => {
             console.log('A listener disconnected, IP: ' + req.ip);
+            removeItemAll(listeners,  req.ip);
+            showListeneres(listeners);
             queue.removeClient(id);
         });
     });
