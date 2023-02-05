@@ -101,7 +101,7 @@ app.use(express.static(outputDir));
 
         req.on("close", () => {
             console.log('A listener disconnected, IP: ' + req.ip);
-            removeItemAll(listeners,  req.ip);
+            removeItemOnce(listeners,  req.ip);
             showListeneres(listeners);
             queue.removeClient(id);
         });
