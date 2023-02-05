@@ -5,6 +5,7 @@ import { Server as IOServer } from "socket.io";
 import queue from "./queue.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import axios from "axios"; 
 
 const PORT = 3000;
 const app = express();
@@ -98,13 +99,25 @@ app.use(express.static(outputDir));
     });
     
 async function getIPInfo(IP){
-    await fetch('http://ip-api.com/json/' + IP).then((res)=>{
-        let data = res.country + res.city;
-        return data;
-    });
+
+    const options = {
+        method: 'GET',
+        url: 'https://zozor54-whois-lookup-v1.p.rapidapi.com/getDomainsFromIp',
+        params: {ip: IP},
+        headers: {
+          'X-RapidAPI-Key': '0f99a3d285mshed03ba69a69175ap16052cjsnca193b26da19',
+          'X-RapidAPI-Host': 'zozor54-whois-lookup-v1.p.rapidapi.com'
+        }
+      };
+      
+      axios.request(options).then(function (response) {
+          return response.data.city;
+      }).catch(function (error) {
+          console.error(error);
+      });
 };
 
-    // HTTP stream for music
+    // http STREAM FOR MUSIC
     app.get("/stream", async (req, res) => {
         const { id, client } = queue.addClient();
         let ip = req.ip.substring(7, req.ip.length);

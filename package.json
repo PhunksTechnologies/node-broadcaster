@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@dropb/ffprobe": "*",
+    "axios": "^1.3.2",
     "express": "*",
     "ffprobe-static": "*",
     "jnaudiostream": "*",
