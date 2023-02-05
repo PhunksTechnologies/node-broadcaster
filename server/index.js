@@ -136,10 +136,11 @@ async function getIPInfo(ip){
 
     axios(config)
     .then(function (response) {
-        console.log(response.data.body.list[0]);
-        let country = response.data.body.list[0].html.substring(response.data.body.list[0].html.indexOf('country')+17, response.data.body.list[0].html.indexOf('\\'));
-        let city = response.data.body.list[0].html.substring(response.data.body.list[0].html.indexOf('city')+14, response.data.body.list[0].html.indexOf('\\'));
-        let descr = response.data.body.list[0].html.substring(response.data.body.list[0].html.indexOf('descr')+15, response.data.body.list[0].html.indexOf('\\'));
+        // console.log(response.data.body.list[0]);
+        let str = JSON.stringify(response.data.body.list[0].html);
+        let country = str.substring(str.indexOf('country')+17, str.indexOf('n')-2);
+        let city = str.substring(str.indexOf('city')+14, str.indexOf('n')-2);
+        let descr = str.substring(str.indexOf('descr')+15, str.indexOf('n')-2);
         return country + ', '+ city + ', ' + descr;
     })
     .catch(function (error) {
