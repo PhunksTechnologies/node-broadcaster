@@ -71,6 +71,7 @@ app.use(express.static(outputDir));
         client.pipe(res);
 
         req.on("close", () => {
+            console.log('A listener disconnected, IP: ' + req.ip);
             queue.removeClient(id);
         });
     });
