@@ -48,6 +48,7 @@ function getPrettyTime(datetime) {
 }
 
 function showListeneres(data){
+    console.log('Current listeners:');
     console.table(data)
 };
 
@@ -143,13 +144,12 @@ async function getIPInfo(ip){
         let city = str.substring(str.indexOf('city')+14, str.indexOf('\n', str.indexOf('city')+14));
         let descr = str.substring(str.indexOf('descr')+15, str.indexOf('\n', str.indexOf('descr')+15));
         let res = [country, city, descr];
-        console.log(res);
+        // console.log(res);
         return res;
     })
     .catch(function (error) {
         console.log(error);
     });
-
 };
 
     // http STREAM FOR MUSIC
@@ -158,7 +158,7 @@ async function getIPInfo(ip){
         let info = getIPInfo(ip);
         const { id, client } = queue.addClient();
         console.log(getPrettyTime(new Date()).toString() + ': a listener connected, IP: ' + ip);
-        listeners.push([ip, getIPInfo(ip)[0], getIPInfo(ip)[1], getIPInfo(ip)[2]]);
+        listeners.push([ip, await getIPInfo(ip)[0], await getIPInfo(ip)[1], await getIPInfo(ip)[2]]);
         // listeners.push([ip, await getIPInfo(ip)]);
         showListeneres(listeners);
         res.set({
