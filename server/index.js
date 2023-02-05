@@ -100,21 +100,51 @@ app.use(express.static(outputDir));
     
 async function getIPInfo(ip){
 
-    const options = {
-        method: 'GET',
-        url: `ipinfo.io/${ip}?token=f320fa541847e7`,
-        // params: {ip: IP},
-        // headers: {
-        //   'X-RapidAPI-Key': '0f99a3d285mshed03ba69a69175ap16052cjsnca193b26da19',
-        //   'X-RapidAPI-Host': 'zozor54-whois-lookup-v1.p.rapidapi.com'
-        // }
-      };
-      
-      await axios.request(options).then(function (response) {
-        return `${response.city}, ${response.city}`;
-      }).catch(function (error) {
-          console.error(error);
-      });
+    var data = JSON.stringify({
+    "headers": {
+        "accept": "application/json, text/plain, */*",
+        "accept-language": "ru,ru-RU;q=0.9,en-US;q=0.8,en;q=0.7",
+        "content-type": "application/json;charset=UTF-8",
+        "sec-ch-ua": "\"Chromium\";v=\"110\", \"Not A(Brand\";v=\"24\", \"Google Chrome\";v=\"110\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "x-client-fingerprint": "2dd04252cea426a634835e57b774541d"
+    },
+    "referrer": "https://www.nic.ru/whois/?searchWord=46.53.182.165",
+    "referrerPolicy": "strict-origin-when-cross-origin",
+    "body": {
+        "searchWord": ip
+    },
+    "method": "POST",
+    "searchWord": ip,
+    "mode": "cors",
+    "credentials": "include"
+    });
+
+    var config = {
+        method: 'post',
+        url: 'https://www.nic.ru/app/v1/get/whois',
+        headers: { 
+        'Content-Type': 'application/json', 
+        'Cookie': '__lhash_=2c2c778a4ddd110c7f9fd977faa2edc0; pofm_cid=63e01faa345bb; session=df5271010489ec36006569c0ddf6fcc8d49c5a9d0cb648653c83072fa0c07938'
+    },
+        data: data
+    };
+
+    axios(config)
+    .then(function (response) {
+        let country = response.body.list[0].html.substring(body.list[0].html.indexOf('country')+17, body.list[0].html.indexOf('\\'));
+        let city = response.body.list[0].html.substring(body.list[0].html.indexOf('city')+14, body.list[0].html.indexOf('\\'));
+        let descr = response.body.list[0].html.substring(body.list[0].html.indexOf('descr')+15, body.list[0].html.indexOf('\\'));
+        return country + ', '+ city + ', ' + descr;
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
 };
 
     // http STREAM FOR MUSIC
@@ -122,7 +152,7 @@ async function getIPInfo(ip){
         const { id, client } = queue.addClient();
         let ip = req.ip.substring(7, req.ip.length);
         console.log(getPrettyTime(new Date()).toString() + ': a listener connected, IP: ' + ip);
-        listeners.push([ip]);
+        listeners.push([ip, await getIPInfo(ip)]);
         // listeners.push([ip, await getIPInfo(ip)]);
         showListeneres(listeners);
         res.set({
