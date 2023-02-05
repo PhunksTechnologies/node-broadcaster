@@ -110,7 +110,7 @@ async function getIPInfo(IP){
         }
       };
       
-      axios.request(options).then(function (response) {
+      await axios.request(options).then(function (response) {
           return response.data.city;
       }).catch(function (error) {
           console.error(error);
