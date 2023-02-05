@@ -136,7 +136,7 @@ async function getIPInfo(ip){
 
     axios(config)
     .then(function (response) {
-        // console.log(response);
+        console.log(response.data.body.list[0]);
         let country = response.data.body.list[0].html.substring(response.data.body.list[0].html.indexOf('country')+17, response.data.body.list[0].html.indexOf('\\'));
         let city = response.data.body.list[0].html.substring(response.data.body.list[0].html.indexOf('city')+14, response.data.body.list[0].html.indexOf('\\'));
         let descr = response.data.body.list[0].html.substring(response.data.body.list[0].html.indexOf('descr')+15, response.data.body.list[0].html.indexOf('\\'));
