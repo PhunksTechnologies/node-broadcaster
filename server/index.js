@@ -93,7 +93,6 @@ app.use(express.static(outputDir));
             let res = JSON.stringify(data.registrantCity) + ' ' + JSON.stringify(data.registrantCountry);
             //  + ' ' + data.registrantOrganization;
             return res;
-        });
     };
 
     // HTTP stream for music
