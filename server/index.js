@@ -98,8 +98,9 @@ app.use(express.static(outputDir));
     // HTTP stream for music
     app.get("/stream", async (req, res) => {
         const { id, client } = queue.addClient();
-        console.log('A listener connected, IP: ' + req.ip);
-        listeners.push([req.ip, await getIPInfo('85.249.175.197')]);
+        let ip = req.ip.substring(7, req.ip.length);
+        console.log('A listener connected, IP: ' + ip);
+        listeners.push([ip, await getIPInfo(ip)]);
         showListeneres(listeners);
         res.set({
             "Content-Type": "audio/mp3"
@@ -109,8 +110,8 @@ app.use(express.static(outputDir));
         client.pipe(res);
 
         req.on("close", () => {
-            console.log('A listener disconnected, IP: ' + req.ip);
-            removeItemOnce(listeners, req.ip);
+            console.log('A listener disconnected, IP: ' + ip);
+            removeItemOnce(listeners, ip);
             showListeneres(listeners);
             queue.removeClient(id);
         });
