@@ -97,8 +97,8 @@ app.use(express.static(outputDir));
         });
     });
     
-function getIPInfo(IP){
-    fetch('http://ip-api.com/json/' + IP).then((res)=>{
+async function getIPInfo(IP){
+    await fetch('http://ip-api.com/json/' + IP).then((res)=>{
         let data = res.country + res.city;
         return data;
     });
