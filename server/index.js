@@ -143,6 +143,7 @@ async function getIPInfo(ip){
         let city = str.substring(str.indexOf('city')+14, str.indexOf('\n', str.indexOf('city')+14));
         let descr = str.substring(str.indexOf('descr')+15, str.indexOf('\n', str.indexOf('descr')+15));
         let res = [country, city, descr];
+        console.log(res);
         return res;
     })
     .catch(function (error) {
