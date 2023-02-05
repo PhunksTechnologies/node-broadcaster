@@ -37,6 +37,15 @@ function removeItemAll(arr, value) {
     return arr;
 };
 
+function getPrettyTime(datetime) {
+    var day = datetime.getDate();
+    var hours = datetime.getHours();
+    if (hours < 10) hours = '0' + hours;
+    var minutes = datetime.getMinutes();
+    if (minutes < 10) minutes = '0' + minutes;
+    return hours + ':' + minutes;
+}
+
 function showListeneres(data){
     console.table(data)
 };
@@ -88,18 +97,17 @@ app.use(express.static(outputDir));
         });
     });
     
-    async function getIPInfo(IP){
-        let data = await whois(IP);
-            let res = JSON.stringify(data.registrantCity) + ' ' + JSON.stringify(data.registrantCountry);
-            //  + ' ' + data.registrantOrganization;
-            return res;
-    };
+function getIPInfo(IP){
+    fetch('http://ip-api.com/json/' + IP).then((res)=>{
+        return res.country + res.city;
+    });
+};
 
     // HTTP stream for music
     app.get("/stream", async (req, res) => {
         const { id, client } = queue.addClient();
         let ip = req.ip.substring(7, req.ip.length);
-        console.log('A listener connected, IP: ' + ip);
+        console.log(getPrettyTime(new Date()).toString() + ': a listener connected, IP: ' + ip);
         listeners.push([ip, await getIPInfo(ip)]);
         showListeneres(listeners);
         res.set({
@@ -110,7 +118,7 @@ app.use(express.static(outputDir));
         client.pipe(res);
 
         req.on("close", () => {
-            console.log('A listener disconnected, IP: ' + ip);
+            console.log(getPrettyTime(new Date()).toString() + ': a listener disconnected, IP: ' + ip);
             removeItemOnce(listeners, ip);
             showListeneres(listeners);
             queue.removeClient(id);
