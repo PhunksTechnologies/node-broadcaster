@@ -122,7 +122,8 @@ async function getIPInfo(ip){
         const { id, client } = queue.addClient();
         let ip = req.ip.substring(7, req.ip.length);
         console.log(getPrettyTime(new Date()).toString() + ': a listener connected, IP: ' + ip);
-        listeners.push([ip, await getIPInfo(ip)]);
+        listeners.push([ip]);
+        // listeners.push([ip, await getIPInfo(ip)]);
         showListeneres(listeners);
         res.set({
             "Content-Type": "audio/mp3"
