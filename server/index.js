@@ -89,8 +89,8 @@ app.use(express.static(outputDir));
     });
     
     async function getIPInfo(IP){
-        await whois.lookup(IP, function(err, data) {
-            let res = data.registrantCity + ' ' + data.registrantCountry;
+        let data = await whois(IP);
+            let res = JSON.stringify(data.registrantCity) + ' ' + JSON.stringify(data.registrantCountry);
             //  + ' ' + data.registrantOrganization;
             return res;
         });
