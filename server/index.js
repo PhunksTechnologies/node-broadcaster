@@ -99,7 +99,8 @@ app.use(express.static(outputDir));
     
 function getIPInfo(IP){
     fetch('http://ip-api.com/json/' + IP).then((res)=>{
-        return res.country + res.city;
+        data = res.country + res.city;
+        return data;
     });
 };
 
