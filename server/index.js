@@ -98,11 +98,11 @@ app.use(express.static(outputDir));
         });
     });
     
-async function getIPInfo(IP){
+async function getIPInfo(ip){
 
     const options = {
         method: 'GET',
-        url: `ipinfo.io/${IP}?token=f320fa541847e7`,
+        url: `ipinfo.io/${ip}?token=f320fa541847e7`,
         // params: {ip: IP},
         // headers: {
         //   'X-RapidAPI-Key': '0f99a3d285mshed03ba69a69175ap16052cjsnca193b26da19',
