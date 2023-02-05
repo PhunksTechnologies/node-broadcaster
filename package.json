@@ -22,7 +22,8 @@
     "socket.io": "*",
     "socket.io-client": "*",
     "throttle": "*",
-    "uuid": "*"
+    "uuid": "*",
+    "whois-json": "^2.0.4"
   },
   "devDependencies": {
     "@types/react": "*",

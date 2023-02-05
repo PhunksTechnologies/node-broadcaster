@@ -1,3 +1,4 @@
+import whois from 'whois-json';
 import express from "express";
 import http from "http";
 import { Server as IOServer } from "socket.io";
@@ -16,7 +17,8 @@ const io = new IOServer(server, {
 
 //HANDLING LISTENERS DISPLYING
 function removeItemOnce(arr, value) {
-    var index = arr.indexOf(value);
+    let arr1 = arr.map( el => el[0]);
+    var index = arr1.indexOf(value);
     if (index > -1) {
       arr.splice(index, 1);
     }
@@ -26,7 +28,7 @@ function removeItemOnce(arr, value) {
 function removeItemAll(arr, value) {
     var i = 0;
     while (i < arr.length) {
-        if (arr[i] === value) {
+        if (arr[i[0]] === value) {
         arr.splice(i, 1);
         } else {
         ++i;
@@ -85,12 +87,20 @@ app.use(express.static(outputDir));
             }
         });
     });
+    
+    async function getIPInfo(IP){
+        await whois.lookup(IP, function(err, data) {
+            let res = data.registrantCity + ' ' + data.registrantCountry;
+            //  + ' ' + data.registrantOrganization;
+            return res;
+        });
+    };
 
     // HTTP stream for music
-    app.get("/stream", (req, res) => {
+    app.get("/stream", async (req, res) => {
         const { id, client } = queue.addClient();
         console.log('A listener connected, IP: ' + req.ip);
-        listeners.push(req.ip);
+        listeners.push([req.ip, await getIPInfo('85.249.175.197')]);
         showListeneres(listeners);
         res.set({
             "Content-Type": "audio/mp3"
@@ -101,7 +111,7 @@ app.use(express.static(outputDir));
 
         req.on("close", () => {
             console.log('A listener disconnected, IP: ' + req.ip);
-            removeItemOnce(listeners,  req.ip);
+            removeItemOnce(listeners, req.ip);
             showListeneres(listeners);
             queue.removeClient(id);
         });
