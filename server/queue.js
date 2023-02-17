@@ -118,6 +118,15 @@ class Queue {
         this.stream = createReadStream(track.filepath);
     }
 
+    //GET NOWPLAYING TRACK
+    getNowplaying() {
+        const track = this.currentTrack;
+        if (!track) return null;
+
+        // console.log("Starting audio stream");
+        return track.filepath.substring(7, track.filepath.length-4);
+    };
+
     // Start broadcasting audio stream
     async start() {
         const track = this.currentTrack;

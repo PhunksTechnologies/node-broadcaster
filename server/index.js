@@ -151,6 +151,10 @@ async function getIPInfo(ip){
         console.log(error);
     });
 };
+    //GET THE NOWPLAYING TRACK
+    app.get("/nowplaying", async (req, res) => {
+        res.send(queue.getNowplaying());
+    });
 
     // http STREAM FOR MUSIC
     app.get("/stream", async (req, res) => {
@@ -225,11 +229,6 @@ async function getIPInfo(ip){
     //         "estimatedDomainAge": 2145
     //     }
     // }
-
-
-
-
-
 
     server.listen(PORT, () => {
         console.log(`Listening on port ${PORT}`);
