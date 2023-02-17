@@ -153,7 +153,7 @@ async function getIPInfo(ip){
 };
     //GET THE NOWPLAYING TRACK
     app.get("/nowplaying", async (req, res) => {
-        res.send(queue.getNowplaying());
+        res.status(200).json({ track: await queue.getNowplaying() })
     });
 
     // http STREAM FOR MUSIC
