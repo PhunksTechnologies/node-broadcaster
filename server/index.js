@@ -1,4 +1,4 @@
-import whois from 'whois-json';
+//import whois from 'whois-json';
 import express from "express";
 import http from "http";
 import { Server as IOServer } from "socket.io";
@@ -69,6 +69,16 @@ app.use(express.static(outputDir));
     queue.play();
 
     io.on("connection", (socket) => {
+
+        //SEND NOWPLAYING
+        socket.emit("nowplaying", {track: queue.getNowplaying()});
+        console.log('Nawplaying info on connection sent: ', {track: queue.getNowplaying()});
+
+        //TEMP SOLUTION FOR SENDING NOWPLAYING INFO - FIND OUT HOW TO LISTEN FOR THE QUEUE TRACK CHANGE AND THEN BROADCAST 
+        let nowplaying = setInterval(()=>{
+            socket.emit("nowplaying", {track: queue.getNowplaying()});
+        }, 5000);
+
         // Every new streamer must receive the header
         if (queue.bufferHeader) {
             socket.emit("bufferHeader", queue.bufferHeader);
@@ -158,11 +168,13 @@ async function getIPInfo(ip){
 
     // http STREAM FOR MUSIC
     app.get("/stream", async (req, res) => {
+
         let ip = req.ip.substring(7, req.ip.length);
-        let info = getIPInfo(ip);
+        // let info = getIPInfo(ip);
         const { id, client } = queue.addClient();
         console.log(getPrettyTime(new Date()).toString() + ': a listener connected, IP: ' + ip);
-        listeners.push([ip, await getIPInfo(ip)[0], await getIPInfo(ip)[1], await getIPInfo(ip)[2]]);
+        //listeners.push([ip, await getIPInfo(ip)[0], await getIPInfo(ip)[1], await getIPInfo(ip)[2]]);
+        listeners.push([ip]);
         // listeners.push([ip, await getIPInfo(ip)]);
         showListeneres(listeners);
         res.set({

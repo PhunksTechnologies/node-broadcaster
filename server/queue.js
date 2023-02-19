@@ -122,8 +122,6 @@ class Queue {
     getNowplaying() {
         const track = this.currentTrack;
         if (!track) return null;
-
-        // console.log("Starting audio stream");
         return track.filepath.substring(7, track.filepath.length-4);
     };
 
